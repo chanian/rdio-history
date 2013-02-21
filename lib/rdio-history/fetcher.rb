@@ -1,5 +1,4 @@
 require 'json'
-require 'net/http'
 require 'net/https'
 require 'rdio-history/session'
 require 'rdio-history/item'
@@ -17,7 +16,10 @@ module Rdio
       end
 
       def fetch(max_requests = 1)
-        http = Net::HTTP.new(API_BASE_URL, 80)
+        https = Net::HTTP.new(API_BASE_URL, 443)
+        https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        https.use_ssl = true
+
         start_index = 1
         rpp = 1
         history = []
@@ -36,7 +38,7 @@ module Rdio
             '_authorization_key' => @auth_key
           }
           data = params.map{|k,v| "#{k}=#{v}"}.join('&')
-          resp = http.post(HISTORY_RESOURCE_URI, data, headers)
+          resp = https.post(HISTORY_RESOURCE_URI, data, headers)
 
           # Verify the request went through
           if resp.code == '403'
