@@ -39,7 +39,6 @@ describe Rdio::History::Fetcher do
 
       it 'should send an authorization key data param' do
         Net::HTTP.any_instance.should_receive(:post) { |uri, data, headers|
-          params = {}
           expect(data).to match /_authorization_key=/
           @mock_response
         }

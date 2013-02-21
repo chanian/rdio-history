@@ -15,7 +15,7 @@ describe Rdio::History::Item do
   end
 
   describe '#initialize' do
-    it 'should rains a parsing exception if encountering unexpected format' do
+    it 'should raise a parsing exception if encountering unexpected format' do
       @api_item['track'] = nil
       lambda { item = Rdio::History::Item.new(@api_item) }.should raise_exception(Rdio::History::ItemParsingException)
     end
