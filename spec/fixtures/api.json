@@ -1,0 +1,35 @@
+{
+  "result": {
+    "sources": [
+      { "tracks": [
+        {
+          "time": 12345,
+          "track": {
+            "artist": "The XX",
+            "name": "Crystalized"
+          }
+        },
+        {
+          "time":54321,
+          "track":
+            {
+              "artist": "The XX",
+              "name":"Intro"
+            }
+          }
+        ]
+      },
+      {
+        "tracks": [
+        {
+          "time": 12345,
+          "track": {
+            "artist": "Grimes",
+            "name": "Infinite Love Without Fulfilment"
+          }
+        }]
+      }
+    ],
+    "last_transaction": 20
+  }
+}

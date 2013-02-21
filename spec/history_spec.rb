@@ -50,11 +50,6 @@ describe Rdio::History::Fetcher do
         @fetcher.fetch
       end
 
-      it 'should take a param which indicates the max number of POSTs' do
-        Net::HTTP.any_instance.should_receive(:post).exactly(3).times
-        @fetcher.fetch(3)
-      end
-
       it 'should return an array' do
         results = @fetcher.fetch
         expect(results).to be_a_kind_of(Array)
@@ -62,11 +57,12 @@ describe Rdio::History::Fetcher do
 
       context 'when there are results' do
         before :each do
-          json_str = json_fixture
           @mock_response = {}
           @mock_response.stub(:code) { 200 }
-          @mock_response.stub(:body) { json_str }
-          Net::HTTP.any_instance.stub(:post) { @mock_response }
+          @mock_response.stub(:body) { json_fixture }
+          Net::HTTP.any_instance.stub(:post) {
+            @mock_response
+          }
         end
 
         it 'should return history items' do
@@ -77,9 +73,36 @@ describe Rdio::History::Fetcher do
           expect(entry.time).to eq(12345)
         end
 
-        it 'should parse mutiple track entries' do
-          results = @fetcher.fetch
-          expect(results.size).to eq(2)
+        it 'should enumerate and return all tracks' do
+          entries = @fetcher.fetch
+          entry = entries[1]
+          expect(entries.size).to eq(3)
+          expect(entry).to_not be_nil
+          expect(entry.name).to eq('Intro')
+          expect(entry.artist).to eq('The XX')
+          expect(entry.time).to eq(54321)
+        end
+
+        it 'should flatten all sources/track to a single array' do
+          entries = @fetcher.fetch
+          entry = entries.last
+          expect(entry).to_not be_nil
+          expect(entry.name).to eq('Infinite Love Without Fulfilment')
+          expect(entry.artist).to eq('Grimes')
+          expect(entry.time).to eq(12345)
+        end
+
+        context 'when sending multiple requests with valid cursor changes' do
+          it 'should send updated cursor according to last_trasaction from API' do
+            @fetcher.fetch
+            Net::HTTP.any_instance.stub(:post) { |uri, data, headers|
+              params = data.split('&').inject({}) { |res, c| (res[c.split('=').first] = c.split('=').last); res }
+              expect(params['start']).to eq('20')
+              @mock_response
+            }
+            # second fetch relies on the last_transaction id from the previous request
+            @fetcher.fetch
+          end
         end
       end
     end

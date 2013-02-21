@@ -1,3 +1,4 @@
-def json_fixture
-  '{"result":{"sources":[{"tracks":[{"time":12345,"track":{"artist":"The XX","name":"Crystalized"}},{"time":12345,"track":{"artist":"Intro","name":"Crystalized"}}]}],"last_transaction":1}}'
+def json_fixture(file = 'api.json')
+  fp = File.expand_path('../fixtures', __FILE__)
+  File.read(File.join(fp, file))
 end
