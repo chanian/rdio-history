@@ -6,11 +6,12 @@ describe Rdio::History::Fetcher do
 
   before :each do
     session = {
-      :user_id => 123,
       :authorization_key => 123,
       :authorization_cookie => 123
     }
-    @fetcher = Rdio::History::Fetcher.new(session)
+    # stub out the user lookup
+    Rdio::History::Fetcher.any_instance.stub(:get_user_key) { { :key => 1234 } }
+    @fetcher = Rdio::History::Fetcher.new(session, 'chanian')
   end
 
   describe '#fetch' do

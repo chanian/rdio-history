@@ -6,22 +6,20 @@ require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 
-desc "Ask the user for their Rdio username/password"
+desc "Ask the user for their Rdio username"
 task :get_user do
-  @username = ask("Enter username: ")
-  @password = ask("Enter password: ") { |q| q.echo = false }
+  @username = ask("Enter an rdio username: ")
 end
 
 desc "Auth then retreive the most recent songs"
 task :default => [:get_user] do
   begin
-    session = Rdio::Session::Fetcher.get_session(@username, @password)
+    session = Rdio::Session::Fetcher.get_session(@username)
   rescue Rdio::Session::SessionException => se
     puts se.message.red
     exit
   end
-
-  f = Rdio::History::Fetcher.new(session)
+  f = Rdio::History::Fetcher.new(session, @username)
   f.fetch.each do |song|
     puts "#{song.name} - #{song.artist}"
   end
@@ -36,3 +34,7 @@ task :get_session => [:get_user] do
 end
 
 task :test => :spec
+
+task :session do
+  Rdio::Session::Fetcher.get_session('chanian')
+end
