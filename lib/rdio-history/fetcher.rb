@@ -13,7 +13,7 @@ module Rdio
         @cursor = 0
         @rpp = 10
         @session = session
-        @user_key = get_user_key(user)['key']
+        @user_key = get_user(user)['key']
       end
 
       # Fetch the user json object from the username

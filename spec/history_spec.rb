@@ -10,7 +10,7 @@ describe Rdio::History::Fetcher do
       :authorization_cookie => 123
     }
     # stub out the user lookup
-    Rdio::History::Fetcher.any_instance.stub(:get_user_key) { { :key => 1234 } }
+    Rdio::History::Fetcher.any_instance.stub(:get_user) { { :key => 1234 } }
     @fetcher = Rdio::History::Fetcher.new(session, 'chanian')
   end
 
