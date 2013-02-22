@@ -13,22 +13,16 @@ end
 
 desc "Auth then retreive the most recent songs"
 task :default => [:get_user] do
-  begin
-    session = Rdio::Session::Fetcher.get_session(@username)
-  rescue Rdio::Session::SessionException => se
-    puts se.message.red
-    exit
-  end
-  f = Rdio::History::Fetcher.new(session, @username)
+  f = Rdio::History::Fetcher.new(@username)
+
   f.fetch.each do |song|
     puts "#{song.name} - #{song.artist}"
   end
 end
 
 desc "Fetch a single long lived session"
-task :get_session => [:get_user] do
-  session = Rdio::Scraper.get_session(@username, @password)
-  puts "user_id: #{session[:user_id]}"
+task :get_session do
+  session = Rdio::Session::Fetcher.get_session
   puts "authorization_key: #{session[:authorization_key]}"
   puts "authorization_cookie: #{session[:authorization_cookie]}"
 end

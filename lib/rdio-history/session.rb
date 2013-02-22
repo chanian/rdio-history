@@ -7,7 +7,7 @@ module Rdio
     class Fetcher
       include Rdio::API
 
-      def self.get_session(username)
+      def self.get_session
         # Initialize HTTPS object in SSL mode
         https = Net::HTTP.new(API_BASE_URL, 443)
         https.verify_mode = OpenSSL::SSL::VERIFY_NONE

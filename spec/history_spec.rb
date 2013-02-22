@@ -9,9 +9,11 @@ describe Rdio::History::Fetcher do
       :authorization_key => 123,
       :authorization_cookie => 123
     }
+    # stub out the request for an auth token
+    Rdio::Session::Fetcher.stub(:get_session) { session }
     # stub out the user lookup
     Rdio::History::Fetcher.any_instance.stub(:get_user) { { :key => 1234 } }
-    @fetcher = Rdio::History::Fetcher.new(session, 'chanian')
+    @fetcher = Rdio::History::Fetcher.new('chanian')
   end
 
   describe '#fetch' do

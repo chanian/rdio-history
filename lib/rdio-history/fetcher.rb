@@ -9,7 +9,9 @@ module Rdio
     class Fetcher
       include Rdio::API
 
-      def initialize(session, user)
+      def initialize(user)
+        session = Rdio::Session::Fetcher.get_session
+
         @cursor = 0
         @rpp = 10
         @session = session
