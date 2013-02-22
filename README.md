@@ -29,10 +29,24 @@ Rdio peeps, just let me know if this is a problem, I'll happily take this librar
 ## Example usage from Library
 ```Ruby
   username = 'chanian'
-  history = Rdio::History::Fetcher.new(username)  
-  history.fetch.each do |song|
+  rdio = Rdio::History::Fetcher.new(username)  
+  rdio.fetch.each do |song|
     puts "#{song.name} - #{song.artist}"
   end
+```
+
+## Example fetching multiple pages of data
+```Ruby
+  # We're only doing a small batch of ~10 per fetch
+  # The cursor will auto advance
+  username = 'chanian'
+  rdio = Rdio::History::Fetcher.new(username)  
+  history = []
+  history << rdio.fetch
+  history << rdio.fetch
+  history << rdio.fetch
+ 
+  puts history.length
 ```
 
 ## Running tests
