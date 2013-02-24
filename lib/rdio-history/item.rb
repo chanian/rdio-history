@@ -1,3 +1,4 @@
+require 'json'
 module Rdio
   module History
     class ItemParsingException < Exception
@@ -16,6 +17,14 @@ module Rdio
         rescue Exception => e
           raise ItemParsingException.new('Unexpected API format')
         end
+      end
+
+      def to_json(*a)
+        return {
+          'name' => @name,
+          'time' => @time,
+          'artist' => @artist
+        }.to_json(*a)
       end
     end
   end
