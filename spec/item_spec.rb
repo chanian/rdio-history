@@ -1,3 +1,4 @@
+require 'json'
 require 'rdio-history/item'
 
 describe Rdio::History::Item do
@@ -12,6 +13,18 @@ describe Rdio::History::Item do
       },
       'time' => @timestamp
     }
+  end
+
+  describe '#to_json' do
+    it 'should return a json string representing this item' do
+      item = Rdio::History::Item.new(@api_item)
+      json = item.to_json
+      obj = JSON.parse(json)
+
+      expect(obj['name']).to eq(@track)
+      expect(obj['artist']).to eq(@artist)
+      expect(obj['time']).to eq(@timestamp)
+    end
   end
 
   describe '#initialize' do
