@@ -42,9 +42,9 @@ Rdio peeps, just let me know if this is a problem, I'll happily take this librar
   username = 'chanian'
   rdio = Rdio::History::Fetcher.new(username)  
   history = []
-  history << rdio.fetch
-  history << rdio.fetch
-  history << rdio.fetch
+  history.concat rdio.fetch
+  history.concat rdio.fetch
+  history.concat rdio.fetch
  
   puts history.length
 ```
