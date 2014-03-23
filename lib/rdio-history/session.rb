@@ -22,7 +22,7 @@ module Rdio
 
         # Now strip out the (presumably) CSRF token
         home = home_response.body
-        auth_key = home.scan(/authorizationKey"\: "(.+)?", "available_balance/)
+        auth_key = home.match(/authorizationKey"\: "([^"]+)/)[1]
 
         return {
           :authorization_cookie => cookie,
